@@ -19,6 +19,7 @@ import com.skiresort.components.finances.core.FinanceManager;
 import com.skiresort.graphics.Camera2D;
 import com.skiresort.graphics.IsometricMath;
 import com.skiresort.graphics.IsometricMath.ScreenPoint;
+import com.skiresort.graphics.TileRenderer;
 import com.skiresort.shared.Position;
 
 /**
@@ -232,67 +233,11 @@ public class SkiResortTycoonGUI extends Application {
      * Render mountain terrain as isometric tiles
      */
     private void renderMountainTerrain() {
-        Camera2D.ViewBounds bounds = camera.getVisibleBounds();
-        
-        // Render tiles in proper z-order (back to front, low to high)
-        for (int y = bounds.maxY; y >= bounds.minY; y--) {
-            for (int x = bounds.minX; x <= bounds.maxX; x++) {
-                if (isInBounds(x, y)) {
-                    renderTerrainTile(x, y);
-                }
-            }
-        }
+        // Use the new TileRenderer for improved performance and maintainability
+        TileRenderer.renderTerrain(gc, mountain, camera);
     }
     
-    /**
-     * Render a single terrain tile
-     */
-    private void renderTerrainTile(int worldX, int worldY) {
-        double elevation = getElevationSafe(worldX, worldY);
-        ScreenPoint screen = camera.worldToScreen(worldX, worldY, elevation);
-        
-        // Skip if not visible
-        if (!camera.isVisible(worldX, worldY, elevation)) {
-            return;
-        }
-        
-        // Get tile corners
-        ScreenPoint[] corners = IsometricMath.getTileBounds(worldX, worldY, elevation);
-        
-        // Apply camera transform to corners
-        for (int i = 0; i < corners.length; i++) {
-            ScreenPoint worldCorner = corners[i];
-            corners[i] = new ScreenPoint(
-                (int)((worldCorner.x - camera.getWorldX() * IsometricMath.TILE_WIDTH/2) * camera.getZoom() + camera.getViewportWidth()/2),
-                (int)((worldCorner.y - camera.getWorldY() * IsometricMath.TILE_HEIGHT/2) * camera.getZoom() + camera.getViewportHeight()/2)
-            );
-        }
-        
-        // Choose color based on elevation
-        Color tileColor = getElevationColor(elevation);
-        gc.setFill(tileColor);
-        
-        // Draw the diamond-shaped tile
-        double[] xPoints = {corners[0].x, corners[1].x, corners[2].x, corners[3].x};
-        double[] yPoints = {corners[0].y, corners[1].y, corners[2].y, corners[3].y};
-        gc.fillPolygon(xPoints, yPoints, 4);
-        
-        // Draw tile outline
-        gc.setStroke(Color.DARKGREEN);
-        gc.setLineWidth(0.5);
-        gc.strokePolygon(xPoints, yPoints, 4);
-    }
-    
-    /**
-     * Get color for terrain based on elevation
-     */
-    private Color getElevationColor(double elevation) {
-        // Simple elevation-based coloring
-        if (elevation < 5) return Color.LIGHTGREEN;      // Low areas
-        else if (elevation < 15) return Color.GREEN;     // Medium areas  
-        else if (elevation < 25) return Color.DARKGREEN; // High areas
-        else return Color.LIGHTGRAY;                     // Very high/rocky areas
-    }
+
     
     /**
      * Render slopes
