@@ -9,8 +9,8 @@ import org.junit.jupiter.api.DisplayName;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Comprehensive tests for graphics components
- * Tests isometric math, camera system, and rendering logic
+ * Tests for core graphics components used by Swing GUI
+ * Tests isometric math and camera system functionality
  */
 @DisplayName("Graphics Component Tests")
 class GraphicsComponentTest {

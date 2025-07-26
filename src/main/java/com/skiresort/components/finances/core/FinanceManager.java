@@ -54,7 +54,7 @@ public class FinanceManager {
     private double dailyInsuranceCosts;    // Future: insurance and safety
     
     // Financial configuration (tuned for challenging progression)
-    private static final double STARTING_MONEY = 15000.0;     // Barely enough for basic setup
+    private static final double STARTING_MONEY = 20000.0;     // Barely enough for basic setup
     private static final double BANKRUPTCY_THRESHOLD = -5000.0; // Game over threshold
     private static final double DAILY_BASE_COSTS = 200.0;      // Base operating costs
     private static final double BASE_LIFT_TICKET_PRICE = 45.0; // Starting ticket price

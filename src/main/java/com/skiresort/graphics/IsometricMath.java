@@ -53,6 +53,26 @@ public class IsometricMath {
     }
     
     /**
+     * Convert screen coordinates back to world coordinates with higher precision
+     * Returns more accurate floating-point coordinates before rounding
+     * 
+     * @param screenX Screen X coordinate
+     * @param screenY Screen Y coordinate  
+     * @return Position containing world coordinates
+     */
+    public static Position screenToWorldHighPrecision(double screenX, double screenY) {
+        // Reverse the isometric transformation with floating-point precision
+        double halfTileWidth = TILE_WIDTH / 2.0;
+        double halfTileHeight = TILE_HEIGHT / 2.0;
+        
+        double worldX = (screenX / halfTileWidth + screenY / halfTileHeight) / 2.0;
+        double worldY = (screenY / halfTileHeight - screenX / halfTileWidth) / 2.0;
+        
+        // Return the exact floating-point coordinates (no rounding)
+        return new Position((int)Math.round(worldX), (int)Math.round(worldY));
+    }
+    
+    /**
      * Convert screen coordinates back to world coordinates
      * Useful for mouse click detection and tile selection
      * 

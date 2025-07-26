@@ -8,9 +8,9 @@ Ski Resort Tycoon is a management simulation game where players build and operat
 
 - **Clean Architecture**: Separation of concerns with core business logic isolated from UI and infrastructure
 - **Component-Based Design**: Each major feature (Mountain, Guests, Finances) is a self-contained component
-- **Advanced Graphics**: Modern JavaFX-based isometric rendering system with camera controls
+- **Modern Graphics**: Professional Java Swing GUI with isometric 3D-style rendering
 - **Scalability**: Modular structure allows easy addition of new features without breaking existing functionality
-- **Test-Driven Development**: Comprehensive test coverage (65+ tests) ensures reliability as the codebase grows
+- **Test-Driven Development**: Comprehensive test coverage (59+ tests) ensures reliability as the codebase grows
 
 ## 🏗️ Architecture
 
@@ -24,15 +24,15 @@ components/
 │   └── tests/         # Component-specific tests
 ├── guests/            # Guest management system ✅
 ├── finances/          # Financial system ✅  
-└── graphics/          # JavaFX isometric rendering ✅
+└── graphics/          # Swing isometric rendering ✅
 ```
 
 ### Clean Architecture Layers
 - **Core**: Domain entities and business rules
 - **Components**: Feature-specific modules with full visual and test coverage
-- **Graphics**: Modern JavaFX-based isometric rendering system
+- **Graphics**: Professional Java Swing isometric rendering system
 - **Shared**: Common utilities and value objects
-- **App**: Multiple application entry points (Console, JavaFX GUI, Demos)
+- **App**: Multiple application entry points (Console demos, Swing GUI)
 
 ## 🚀 Current Features
 
@@ -41,7 +41,7 @@ components/
 - **Ski Slope Management**: Build slopes with different difficulty levels (Beginner, Intermediate, Advanced, Expert)
 - **Ski Lift System**: Multiple lift types (Chairlift, Gondola, T-Bar, Magic Carpet) with capacity management
 - **Validation System**: Ensures slopes go downhill and lifts go uphill based on terrain elevation
-- **Visual Rendering**: Both ASCII and JavaFX isometric visualization
+- **Visual Rendering**: Both ASCII debug view and professional Swing isometric graphics
 - **Appeal System**: Dynamic scoring for attractions based on conditions and crowding
 
 ### Guest Component ✅
@@ -61,20 +61,20 @@ components/
 - **Financial Progression**: Multiple difficulty tiers from survival to empire building
 - **Realistic Operating Costs**: Daily expenses, utilities, maintenance, and staff costs
 
-### Graphics Component ✅ NEW!
-- **Modern JavaFX Rendering**: Hardware-accelerated 2D graphics with isometric perspective
+### Graphics Component ✅
+- **Professional Swing GUI**: Cross-platform compatibility with native look and feel
+- **Isometric 3D-Style Rendering**: Classic tycoon game perspective with proper depth
 - **Advanced Camera System**: Pan, zoom, and explore the resort with smooth controls
-- **Isometric Mathematics**: Proper coordinate conversion for classic tycoon game feel
-- **Terrain Visualization**: Elevation-based coloring and tile rendering
+- **Terrain Visualization**: Elevation-based coloring and diamond-shaped tile rendering
 - **Infrastructure Rendering**: Visual representation of slopes, lifts, and guest movement
-- **Performance Optimized**: Frustum culling and efficient tile rendering
-- **Comprehensive Testing**: 21 graphics tests covering math, camera, and rendering
+- **Performance Optimized**: Double-buffered rendering with viewport culling
+- **Real-time Updates**: Live guest simulation and financial tracking in status bar
 
 ### Technical Features
 - **Maven Build System**: Professional project structure with dependency management
-- **Comprehensive Testing**: 65+ test cases covering all components (JUnit 5)
+- **Comprehensive Testing**: 59+ test cases covering all components (JUnit 5)
 - **Java 17**: Modern Java features and best practices
-- **JavaFX Graphics**: Modern 2D graphics with isometric rendering
+- **Java Swing Graphics**: Rock-solid cross-platform GUI framework
 - **Logging**: SLF4J with Logback for proper logging infrastructure
 - **JSON Support**: Jackson for future save/load functionality
 
@@ -83,7 +83,6 @@ components/
 ### Prerequisites
 - Java 17 or later
 - Maven 3.6 or later
-- JavaFX 17+ (included as dependency)
 
 ### Installation
 1. Clone the repository
@@ -93,13 +92,13 @@ components/
    mvn clean compile
    ```
 
-### Running the Applications
+### Running the Game
 
-#### JavaFX Isometric GUI (Recommended)
+#### Main Swing GUI (Recommended)
 ```bash
 mvn compile exec:java -Dexec.mainClass="com.skiresort.app.SkiResortTycoonGUI"
 ```
-Features: Interactive isometric view, mouse controls, real-time rendering
+**Features**: Professional isometric graphics, full mouse controls, real-time simulation
 
 #### Console Demos
 ```bash
@@ -121,32 +120,35 @@ mvn compile exec:java -Dexec.mainClass="com.skiresort.app.SkiResortTycoonSimpleD
 mvn test
 ```
 
-**Test Coverage**: 65 comprehensive test cases
+**Test Coverage**: 59 comprehensive test cases
 - Mountain Component: 11 tests
 - Guest Component: 13 tests  
 - Finance Component: 20 tests
-- Graphics Component: 21 tests
+- Graphics Component: 15 tests
 
-## 📊 JavaFX Isometric View
+## 🎮 Swing GUI Features
 
-The new JavaFX application features:
+The professional Swing GUI provides:
 
-- **Isometric Perspective**: Classic RollerCoaster Tycoon-style fixed camera angle
-- **Interactive Controls**: 
-  - Mouse drag to pan around the resort
-  - Mouse wheel to zoom in/out
-  - Click to show world coordinates (debug)
-- **Real-time Rendering**: Smooth 60fps graphics with proper depth sorting
-- **Visual Elements**:
-  - Terrain tiles with elevation-based coloring
-  - Slopes rendered with difficulty-appropriate colors (Green/Blue/Black/Red)
+### Visual Features
+- **Isometric 3D-Style View**: Classic RollerCoaster Tycoon perspective
+- **Terrain Rendering**: Diamond-shaped tiles with elevation-based coloring
+- **Infrastructure Display**: 
+  - Slopes with difficulty color coding (🟢 Green, 🔵 Blue, ⚫ Black, 🔴 Red)
   - Lifts with stations and connecting lines
-  - UI overlay with camera info and controls
+  - Guest visualization as animated yellow dots
 
-### Controls
-- **Pan**: Click and drag to move around
-- **Zoom**: Mouse wheel to zoom in/out
-- **Debug**: Click anywhere to see world coordinates
+### Interactive Controls
+- **Mouse Drag**: Pan around the resort
+- **Mouse Wheel**: Zoom in and out smoothly
+- **Click Debug**: Click anywhere to see world coordinates
+- **Status Bar**: Real-time guest count, money, and camera position
+
+### Technical Excellence
+- **Double-Buffered Rendering**: Smooth 30 FPS graphics
+- **Viewport Culling**: Only renders visible terrain for performance
+- **Cross-Platform**: Works perfectly on Windows, macOS, and Linux
+- **System Integration**: Uses native look and feel
 
 ## 🧪 Testing Philosophy
 
@@ -156,12 +158,12 @@ The project follows a test-first approach with comprehensive coverage:
 - **Mountain**: Terrain generation, slope/lift validation, elevation calculations
 - **Guest**: Behavior simulation, satisfaction tracking, lifecycle management
 - **Finance**: Economic calculations, loan system, revenue/expense tracking
-- **Graphics**: Coordinate math, camera controls, rendering logic
+- **Graphics**: Coordinate math, camera controls, isometric rendering logic
 
 ### Integration Testing
 - Cross-component interactions (guests using slopes/lifts, financial impacts)
 - End-to-end scenarios through demo applications
-- Visual verification through ASCII and JavaFX rendering
+- Visual verification through ASCII and Swing rendering
 
 ### Performance Testing
 - Large mountain handling (100x100 grids)
@@ -191,56 +193,25 @@ The project follows a test-first approach with comprehensive coverage:
 ### Graphics Component
 - **`IsometricMath`**: Coordinate conversion and tile mathematics
 - **`Camera2D`**: Pan/zoom camera system with smooth movement
-- **`TileRenderer`**: Efficient terrain rendering with frustum culling
-- **`SkiResortTycoonGUI`**: Main JavaFX application
+- **`SkiResortTycoonGUI`**: Main Swing application with integrated rendering
 
 ### Shared Utilities
 - **`GameConstants`**: Centralized configuration values
 - **`Position`**: Coordinate system with distance calculations
 
-## 🚧 Known Issues
-
-### JavaFX on macOS
-There's a known issue with JavaFX on macOS related to NSTrackingArea management that can cause crashes during window resizing. This is a platform-specific JavaFX bug, not an issue with our code. Workarounds:
-
-1. Run on Linux or Windows for stable JavaFX experience
-2. Use the console demos which work perfectly on all platforms
-3. Avoid rapid window resizing when running on macOS
-
-The application initializes correctly and renders properly before the crash occurs.
-
-## 🎯 Planned Features
-
-### Enhanced Graphics
-- **3D Elements**: Pseudo-3D trees, buildings, and decorations
-- **Weather Effects**: Snow particles, fog, and dynamic weather visualization
-- **Guest Animation**: Animated skiers moving down slopes and riding lifts
-- **UI Menus**: In-game construction and management interfaces
-
-### Advanced Gameplay
-- **Weather & Seasons**: Snow quality, weather events, seasonal guest flow
-- **Staff Management**: Lift operators, ski patrol, maintenance crews
-- **Infrastructure**: Lodges, restaurants, rental shops, parking
-- **Scenarios**: Challenge modes and objectives
-
-### Save/Load System
-- **Game Persistence**: Save resort progress and continue later
-- **Scenario Editor**: Create custom mountains and challenges
-- **Statistics Tracking**: Long-term performance analytics
-
 ## 📈 Performance Considerations
 
-- **Efficient Rendering**: Frustum culling ensures only visible tiles are drawn
+- **Efficient Rendering**: Viewport culling ensures only visible tiles are drawn
 - **Memory Optimization**: Immutable value objects reduce garbage collection
 - **Scalable Architecture**: Components handle large resorts (100x100+ mountains)
-- **Optimized Calculations**: Cached elevation lookups and distance calculations
+- **Optimized Graphics**: Double-buffered Swing rendering with anti-aliasing
 
 ## 🤝 Contributing
 
 The project architecture supports easy extension:
 
 1. **Add New Components**: Follow the established core/visual/test pattern
-2. **Extend Graphics**: Enhance the isometric rendering system
+2. **Enhance Graphics**: Extend the Swing rendering system
 3. **Add Game Features**: Build on the solid financial and guest foundations
 4. **Improve Testing**: Maintain the comprehensive test coverage
 
@@ -250,11 +221,12 @@ The project architecture supports easy extension:
 - ✅ Complete Mountain component with terrain generation and validation
 - ✅ Advanced Guest system with AI and satisfaction tracking
 - ✅ Comprehensive Financial system with loans and dynamic pricing
-- ✅ Modern JavaFX graphics with isometric rendering
-- ✅ Professional camera system with smooth controls
-- ✅ Comprehensive test suite (65 test cases)
+- ✅ Professional Swing GUI with isometric rendering
+- ✅ Advanced camera system with smooth controls
+- ✅ Comprehensive test suite (59 test cases)
 - ✅ Multiple demo applications showcasing features
 - ✅ ASCII rendering for debugging and console use
+- ✅ Clean architecture with no redundancy
 
 ### Upcoming v1.1.0
 - 🚧 Enhanced UI menus and construction interfaces
@@ -266,6 +238,6 @@ The project architecture supports easy extension:
 
 1. **Learning Platform**: Demonstrate clean architecture and design patterns in Java
 2. **Scalable Foundation**: Build a system that can grow into a full tycoon game  
-3. **Modern Graphics**: Showcase JavaFX capabilities for 2D game development
+3. **Professional Graphics**: Showcase Java Swing capabilities for modern game development
 4. **Test Excellence**: Maintain comprehensive test coverage as complexity grows
 5. **Clean Code**: Prioritize readability and maintainability over features 

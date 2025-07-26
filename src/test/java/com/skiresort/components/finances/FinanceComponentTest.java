@@ -40,7 +40,7 @@ public class FinanceComponentTest {
     @Test
     void testInitialFinancialState() {
         // Starting money should be challenging but enough for basic setup
-        assertEquals(15000.0, financeManager.getCurrentMoney(), 0.01);
+        assertEquals(20000.0, financeManager.getCurrentMoney(), 0.01);
         assertEquals(0.0, financeManager.getTotalRevenue(), 0.01);
         assertEquals(0.0, financeManager.getTotalExpenses(), 0.01);
         assertEquals(0.0, financeManager.getTotalDebt(), 0.01);
@@ -51,8 +51,8 @@ public class FinanceComponentTest {
     @Test
     void testCanAffordValidation() {
         assertTrue(financeManager.canAfford(10000)); // Should be able to afford this
-        assertTrue(financeManager.canAfford(15000)); // Exactly the starting amount
-        assertFalse(financeManager.canAfford(20000)); // Too expensive initially
+        assertTrue(financeManager.canAfford(20000)); // Exactly the starting amount
+        assertFalse(financeManager.canAfford(25000)); // Too expensive initially
     }
     
     @Test
@@ -68,12 +68,12 @@ public class FinanceComponentTest {
     
     @Test
     void testPurchaseInsufficientFunds() {
-        double cost = 20000.0; // More than starting money
+        double cost = 25000.0; // More than starting money
         
         assertFalse(financeManager.makePurchase(cost, "Expensive item", ExpenseCategory.OTHER));
         
         // Money should remain unchanged
-        assertEquals(15000.0, financeManager.getCurrentMoney(), 0.01);
+        assertEquals(20000.0, financeManager.getCurrentMoney(), 0.01);
         assertEquals(0.0, financeManager.getTotalExpenses(), 0.01);
     }
     
@@ -85,7 +85,7 @@ public class FinanceComponentTest {
         assertTrue(financeManager.takeLoan(loanAmount, purpose));
         
         // Money should increase by loan amount
-        assertEquals(40000.0, financeManager.getCurrentMoney(), 0.01);
+        assertEquals(45000.0, financeManager.getCurrentMoney(), 0.01);
         assertEquals(25000.0, financeManager.getTotalDebt(), 0.01);
         
         // Should have one active loan
@@ -211,7 +211,7 @@ public class FinanceComponentTest {
         
         // Should have initial investment recorded
         assertTrue(revenueBySource.containsKey(RevenueSource.INITIAL_INVESTMENT));
-        assertEquals(15000.0, revenueBySource.get(RevenueSource.INITIAL_INVESTMENT), 0.01);
+        assertEquals(20000.0, revenueBySource.get(RevenueSource.INITIAL_INVESTMENT), 0.01);
     }
     
     @Test

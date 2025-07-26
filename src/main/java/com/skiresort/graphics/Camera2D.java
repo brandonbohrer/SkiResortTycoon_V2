@@ -16,8 +16,8 @@ public class Camera2D {
     
     // Camera zoom level
     private double zoom;
-    private static final double MIN_ZOOM = 0.25; // 25% zoom
-    private static final double MAX_ZOOM = 3.0;  // 300% zoom
+    private static final double MIN_ZOOM = 0.01; // Extremely zoomed out (almost no limit)
+    private static final double MAX_ZOOM = 100.0;  // Extremely zoomed in (almost no limit)
     private static final double DEFAULT_ZOOM = 1.0;
     
     // Viewport dimensions (screen size)
@@ -31,7 +31,7 @@ public class Camera2D {
     // Pan smoothing (for future smooth camera movement)
     private double targetWorldX;
     private double targetWorldY;
-    private double panSpeed = 0.1; // How fast camera catches up to target
+    private double panSpeed = 0.3; // How fast camera catches up to target (increased for responsiveness)
     
     public Camera2D(int viewportWidth, int viewportHeight) {
         this.viewportWidth = viewportWidth;
@@ -56,9 +56,12 @@ public class Camera2D {
         // Get base isometric coordinates
         ScreenPoint isoPoint = IsometricMath.worldToScreen(worldX, worldY, elevation);
         
-        // Apply camera transform
-        int screenX = (int)((isoPoint.x - this.worldX * IsometricMath.TILE_WIDTH/2) * zoom + offsetX);
-        int screenY = (int)((isoPoint.y - this.worldY * IsometricMath.TILE_HEIGHT/2) * zoom + offsetY);
+        // Simple camera transform: subtract camera position, apply zoom, add screen center
+        // This follows the standard pattern: screen = (world - camera) * zoom + offset
+        ScreenPoint cameraIsoPoint = IsometricMath.worldToScreen((int)this.worldX, (int)this.worldY, 0);
+        
+        int screenX = (int)((isoPoint.x - cameraIsoPoint.x) * zoom + offsetX);
+        int screenY = (int)((isoPoint.y - cameraIsoPoint.y) * zoom + offsetY);
         
         return new ScreenPoint(screenX, screenY);
     }
@@ -74,9 +77,12 @@ public class Camera2D {
      * Convert screen coordinates to world coordinates considering camera
      */
     public Position screenToWorld(int screenX, int screenY) {
-        // Reverse camera transform
-        double isoX = (screenX - offsetX) / zoom + this.worldX * IsometricMath.TILE_WIDTH/2;
-        double isoY = (screenY - offsetY) / zoom + this.worldY * IsometricMath.TILE_HEIGHT/2;
+        // Reverse the camera transform: remove screen center, reverse zoom, add camera position
+        // This is the inverse of worldToScreen: world = (screen - offset) / zoom + camera
+        ScreenPoint cameraIsoPoint = IsometricMath.worldToScreen((int)this.worldX, (int)this.worldY, 0);
+        
+        double isoX = (screenX - offsetX) / zoom + cameraIsoPoint.x;
+        double isoY = (screenY - offsetY) / zoom + cameraIsoPoint.y;
         
         // Convert from isometric to world coordinates
         return IsometricMath.screenToWorld((int)isoX, (int)isoY);
@@ -94,8 +100,8 @@ public class Camera2D {
      * Pan the camera by a delta amount
      */
     public void panBy(double deltaX, double deltaY) {
-        this.targetWorldX = this.worldX + deltaX;
-        this.targetWorldY = this.worldY + deltaY;
+        this.targetWorldX += deltaX; // Use += instead of setting to worldX + deltaX
+        this.targetWorldY += deltaY;
     }
     
     /**
@@ -125,12 +131,12 @@ public class Camera2D {
     /**
      * Zoom towards a specific screen point (like mouse position)
      */
-    public void zoomTowards(double factor, int screenX, int screenY) {
+    public void zoomTowards(double newZoom, int screenX, int screenY) {
         // Get world position under mouse before zoom
         Position worldBeforeZoom = screenToWorld(screenX, screenY);
         
         // Apply zoom
-        setZoom(this.zoom * factor);
+        setZoom(newZoom);
         
         // Get world position under mouse after zoom
         Position worldAfterZoom = screenToWorld(screenX, screenY);
@@ -138,7 +144,12 @@ public class Camera2D {
         // Adjust camera to keep the same world point under the mouse
         double deltaX = worldBeforeZoom.getX() - worldAfterZoom.getX();
         double deltaY = worldBeforeZoom.getY() - worldAfterZoom.getY();
-        panBy(deltaX, deltaY);
+        
+        // Immediately move camera (no smooth interpolation for zoom)
+        this.worldX += deltaX;
+        this.worldY += deltaY;
+        this.targetWorldX = this.worldX;
+        this.targetWorldY = this.worldY;
     }
     
     /**
@@ -149,6 +160,10 @@ public class Camera2D {
         if (Math.abs(worldX - targetWorldX) > 0.01 || Math.abs(worldY - targetWorldY) > 0.01) {
             worldX += (targetWorldX - worldX) * panSpeed;
             worldY += (targetWorldY - worldY) * panSpeed;
+        } else {
+            // Snap to target if very close (prevents infinite interpolation)
+            worldX = targetWorldX;
+            worldY = targetWorldY;
         }
     }
     
